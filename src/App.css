@@ -17,6 +17,7 @@
   align-items: baseline;
   justify-content: space-between;
   padding-bottom: 56px;
+  gap: 16px;
 }
 
 .brand {
@@ -43,6 +44,7 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 /* ── Main grid ────────────────────────────────────── */
@@ -67,12 +69,14 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+  min-width: 0;
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
 }
 
 .label {
@@ -96,7 +100,7 @@
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px 14px;
-  font-size: 14px;
+  font-size: 16px; /* 16px evita zoom automático no iOS */
   color: var(--text);
   transition: border-color 0.18s ease, background 0.18s ease;
 }
@@ -109,7 +113,7 @@
 
 .textarea {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   resize: vertical;
   min-height: 80px;
@@ -133,6 +137,7 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  min-height: 44px; /* tap target acessível */
 }
 
 .preset:hover {
@@ -150,7 +155,7 @@
 
 .color-input {
   display: grid;
-  grid-template-columns: auto 24px 1fr;
+  grid-template-columns: auto 24px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   background: var(--panel);
@@ -158,6 +163,7 @@
   border-radius: 10px;
   padding: 10px 12px;
   transition: border-color 0.18s ease;
+  min-width: 0;
 }
 
 .color-input:hover {
@@ -180,6 +186,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .color-swatch input[type=color] {
@@ -200,6 +207,7 @@
   border: none;
   color: var(--text);
   width: 100%;
+  min-width: 0;
   padding: 0;
 }
 
@@ -249,6 +257,7 @@
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
+  flex-wrap: wrap;
 }
 
 .logo-preview img {
@@ -278,12 +287,13 @@
   background: transparent;
   border: 1px solid var(--border);
   color: var(--muted);
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
   transition: border-color 0.18s ease, color 0.18s ease;
   flex-shrink: 0;
+  min-height: 44px; /* tap target */
 }
 
 .logo-remove:hover {
@@ -316,20 +326,25 @@
   border-radius: 16px;
   position: relative;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 100%;
 }
 
 .preview-stage:hover {
   transform: translateY(-3px);
 }
 
+/* Container do QR escala com a tela */
 .qr-container {
   display: block;
   line-height: 0;
+  max-width: 100%;
 }
 
 .qr-container canvas {
-  display: block;
+  display: block !important;
   border-radius: 8px;
+  max-width: 100% !important;
+  height: auto !important;
   transition: filter 0.2s ease;
 }
 
@@ -349,6 +364,7 @@
   letter-spacing: -0.005em;
   cursor: pointer;
   transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease;
+  min-height: 48px;
 }
 
 .download:hover {
@@ -378,6 +394,73 @@
   text-align: center;
   font-size: 12px;
   color: var(--muted);
+}
+
+/* ── Mobile refinements ───────────────────────────── */
+
+@media (max-width: 600px) {
+  .app {
+    padding: 20px 16px 48px;
+  }
+
+  .header {
+    padding-bottom: 32px;
+  }
+
+  .main {
+    gap: 28px;
+  }
+
+  .controls {
+    gap: 28px;
+  }
+
+  .preview-stage {
+    padding: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .preview-stage:hover {
+    transform: none; /* Sem hover-bounce no mobile */
+  }
+
+  .qr-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .presets {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .download {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Celulares muito estreitos */
+@media (max-width: 380px) {
+  .color-row {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-meta {
+    display: none;
+  }
+
+  .logo-preview {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-remove {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 /* ── Accessibility ────────────────────────────────── */
